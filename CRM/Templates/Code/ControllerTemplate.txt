@@ -1,0 +1,14 @@
+using CRM.Services.interfaces;
+
+namespace CRM.Controllers
+{
+    public class $ModelName$Controller : BaseController
+    {
+        private I$ModelName$Service service;
+
+        public $ModelName$Controller(I$ModelName$Service service)
+        {
+            this.service = service;
+        }
+    }
+}

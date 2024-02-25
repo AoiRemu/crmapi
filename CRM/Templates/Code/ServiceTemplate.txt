@@ -1,0 +1,14 @@
+using CRM.Services.Interfaces;
+using CRM.Repositories;
+
+namespace CRM.Services
+{
+    public class $ModelName$Service : I$ModelName$Service
+    {
+        private $ModelName$Repository repository;
+        public $ModelName$Service($ModelName$Repository repository)
+        {
+            this.repository = repository;
+        }
+    }
+}
