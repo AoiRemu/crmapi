@@ -167,5 +167,12 @@ namespace Models
            [SugarColumn(ColumnName="isdel")]           
            public short Isdel {get;set;}
 
+           /// <summary>
+           /// Desc:是否删除;0-正常，1-删除
+           /// Default:0
+           /// Nullable:False
+           /// </summary>
+           [SugarColumn(ColumnName = "follow_state")]
+           public short FollowState { get; set; }
     }
 }

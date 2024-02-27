@@ -18,6 +18,15 @@
             };
         }
 
+        public static ResultInfo Success(string message)
+        {
+            return new ResultInfo()
+            {
+                IsSuccess = true,
+                Message = message,
+            };
+        }
+
         public static ResultInfo Fail<T>(string message, T data = default)
         {
             return new ResultInfo()
@@ -25,6 +34,15 @@
                 IsSuccess = false,
                 Message = message,
                 Data = data
+            };
+        }
+
+        public static ResultInfo Fail(string message)
+        {
+            return new ResultInfo()
+            {
+                IsSuccess = false,
+                Message = message,
             };
         }
     }

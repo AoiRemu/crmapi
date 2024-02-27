@@ -32,7 +32,7 @@ namespace CRM.Repositories
 
         public bool AddInfo(CustomerInfoModel model)
         {
-            return AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime }).ExecuteCommand() > 0;
+            return AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime, }).ExecuteCommand() > 0;
         }
     }
 }

@@ -34,5 +34,10 @@ namespace CRM.Repositories
         {
             return AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime }).ExecuteCommand() > 0;
         }
+
+        public FollowUpLogModel? GetLastLog(ulong customerId)
+        {
+            return AsQueryable().Where(a => a.CustomerId == customerId).OrderByDescending(a => a.Ctime).First();
+        }
     }
 }

@@ -34,5 +34,10 @@ namespace CRM.Repositories
         {
             return AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime }).ExecuteCommand() > 0;
         }
+
+        public List<CustomerTagModel> GetCustomerTagList(ulong customerId)
+        {
+            return AsQueryable().Where(a => a.CustomerId == customerId).ToList();
+        }
     }
 }
