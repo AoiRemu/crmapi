@@ -1,4 +1,5 @@
 using CRM.Common.Helpers;
+using CRM.Models.View;
 using Models;
 using SqlSugar;
 
@@ -10,9 +11,22 @@ namespace CRM.Repositories
         {
         }
 
-        public List<CustomerGroupModel> SearchList()
+        public List<CustomerGroupModel> SearchList(CustomerGroupRequest request, out int total)
         {
-            return Context.Queryable<CustomerGroupModel>().ToList();
+            total = 0;
+            var query = AsQueryable();
+            if(request.Name != null && string.IsNullOrEmpty(request.Name))
+            {
+                query.Where(a => a.Name.Contains(request.Name));
+            }
+
+            if (request.IsPage)
+            {
+                return query.ToPageList(request.PageIndex, request.PageSize, ref total);
+            }
+
+            return query.ToList();
+
         }
 
         public CustomerGroupModel GetDetail(ulong id)
@@ -22,7 +36,7 @@ namespace CRM.Repositories
 
         public bool UpdateInfo(CustomerGroupModel model)
         {
-            return AsUpdateable().Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).UpdateColumns(a => new { a.Name,a.ParentId }).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)

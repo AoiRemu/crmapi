@@ -76,5 +76,20 @@ namespace CRM.Repositories
         {
             return AsUpdateable().SetColumns(a => a.GroupId == request.GroupId).Where(a => request.CustomerIdList.Contains(a.Id)).ExecuteCommandHasChange();
         }
+
+        public bool UpdateState(ulong customerId, short state)
+        {
+            return AsUpdateable().SetColumns(a => a.State == state).Where(a => a.Id == customerId).ExecuteCommandHasChange();
+        }
+
+        public List<CustomerMainModel> GetCustomerMainByGroupId(ulong groupId)
+        {
+            return AsQueryable().Where(a => a.GroupId == groupId).ToList();
+        }
+
+        public bool BatchUpdateGroupId(List<CustomerMainModel> list)
+        {
+            return AsUpdateable(list).UpdateColumns(a => new { a.GroupId }).ExecuteCommandHasChange();
+        }
     }
 }

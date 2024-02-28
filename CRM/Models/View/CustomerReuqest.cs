@@ -26,7 +26,7 @@ namespace CRM.Models.View
         public short Level { get; set; }
         public short State { get; set; }
         public ulong GroupId { get; set; }
-        public List<CustomerTagModel> Tags { get; set; } = new List<CustomerTagModel>();
+        public List<CustomerTagViewModel> Tags { get; set; } = new List<CustomerTagViewModel>();
         public string Qualification { get; set; } = string.Empty;
         public DateTime? NextFollowTime { get; set; }
     }

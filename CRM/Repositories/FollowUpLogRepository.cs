@@ -1,4 +1,5 @@
 using CRM.Common.Helpers;
+using CRM.Models.View;
 using Models;
 using SqlSugar;
 
@@ -10,9 +11,9 @@ namespace CRM.Repositories
         {
         }
 
-        public List<FollowUpLogModel> SearchList()
+        public List<FollowUpLogModel> SearchList(FollowUpLogRequest request)
         {
-            return Context.Queryable<FollowUpLogModel>().ToList();
+            return AsQueryable().Where(a => a.CustomerId == request.CustomerId).ToList();
         }
 
         public FollowUpLogModel GetDetail(ulong id)
@@ -22,7 +23,7 @@ namespace CRM.Repositories
 
         public bool UpdateInfo(FollowUpLogModel model)
         {
-            return AsUpdateable().Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).IgnoreColumns(a => new { a.Ctime, a.Utime }).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)

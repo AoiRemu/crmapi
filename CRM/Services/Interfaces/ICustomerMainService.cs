@@ -10,5 +10,7 @@ namespace CRM.Services.Interfaces
         public ResultInfo Add(CustomerAddRequest request);
 
         public ResultInfo BatchUpdateGroup(CustomerBatchGroupRequest request);
+
+        public ResultInfo GiveUp(ulong customerId);
     }
 }

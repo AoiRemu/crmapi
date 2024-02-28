@@ -1,27 +1,45 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using Models;
 using SqlSugar;
+using System.Security.Principal;
 
-namespace Models
+namespace CRM.Models.View
 {
-    ///<summary>
-    ///合同
-    ///</summary>
-    [SugarTable("contract")]
-    public partial class ContractModel
+    public class ContractRequest : PageRequest
     {
-        public ContractModel()
+        public ulong? AccountId { get; set; }
+
+        public string? Account { get; set; } = string.Empty;
+
+        public short? State { get; set; }
+    }
+
+    public class ContractViewModel
+    {
+        public ContractViewModel() { }
+
+        public ContractViewModel(ContractModel model)
         {
-
-
+            Id = model.Id;
+            AccountId = model.AccountId;
+            Ctime = model.Ctime;
+            Utime = model.Utime;
+            Account = model.Account;
+            Amount = model.Amount;
+            SignTime = model.SignTime;
+            State = model.State;
+            CustomerId = model.CustomerId;
         }
-        /// <summary>
-        /// Desc:主键Id
-        /// Default:
-        /// Nullable:False
-        /// </summary>           
-        [SugarColumn(IsPrimaryKey = true, IsIdentity = true, ColumnName = "id")]
+
+        public ContractModel ToDBModel()
+        {
+            return new ContractModel
+            {
+                Amount = Amount,
+                State = State,
+                SignTime = SignTime,
+            };
+        }
+
         public ulong Id { get; set; }
 
         /// <summary>
@@ -29,7 +47,6 @@ namespace Models
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "ctime")]
         public DateTime Ctime { get; set; }
 
         /// <summary>
@@ -37,7 +54,6 @@ namespace Models
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "utime")]
         public DateTime Utime { get; set; }
 
         /// <summary>
@@ -45,7 +61,6 @@ namespace Models
         /// Default:
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "account")]
         public string Account { get; set; }
 
         /// <summary>
@@ -53,7 +68,6 @@ namespace Models
         /// Default:0
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "account_id")]
         public ulong AccountId { get; set; }
 
         /// <summary>
@@ -61,7 +75,6 @@ namespace Models
         /// Default:0
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "amount")]
         public decimal Amount { get; set; }
 
         /// <summary>
@@ -69,7 +82,6 @@ namespace Models
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "sign_time")]
         public DateTime SignTime { get; set; }
 
         /// <summary>
@@ -77,7 +89,6 @@ namespace Models
         /// Default:0
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "state")]
         public short State { get; set; }
 
         /// <summary>
@@ -85,8 +96,6 @@ namespace Models
         /// Default:0
         /// Nullable:False
         /// </summary>
-        [SugarColumn(ColumnName = "customer_id")]
         public ulong CustomerId { get; set; }
-
     }
 }

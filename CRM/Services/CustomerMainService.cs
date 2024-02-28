@@ -1,6 +1,7 @@
 using CRM.Services.Interfaces;
 using CRM.Repositories;
 using CRM.Models.View;
+using CRM.Models.Enums;
 
 namespace CRM.Services
 {
@@ -66,6 +67,12 @@ namespace CRM.Services
             repository.BatchGroup(request);
 
             return ResultInfo.Success("批量分组成功");
+        }
+
+        public ResultInfo GiveUp(ulong customerId)
+        {
+            repository.UpdateState(customerId, (short)CustomerMainStateEnum.Abandon);
+            return ResultInfo.Success("放弃成功");
         }
     }
 }

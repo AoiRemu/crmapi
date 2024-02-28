@@ -1,4 +1,5 @@
 using CRM.Common.Helpers;
+using CRM.Models.View;
 using Models;
 using SqlSugar;
 
@@ -10,9 +11,26 @@ namespace CRM.Repositories
         {
         }
 
-        public List<ContractModel> SearchList()
+        public List<ContractModel> SearchList(ContractRequest request, out int total)
         {
-            return Context.Queryable<ContractModel>().ToList();
+            total = 0;
+            var query = AsQueryable();
+            if(request.AccountId != null)
+            {
+                query.Where(a => a.AccountId == request.AccountId);
+            }
+
+            if(request.Account != null && !string.IsNullOrEmpty(request.Account))
+            {
+                query.Where(a => request.Account.Contains(request.Account));
+            }
+
+            if(request.State != null)
+            {
+                query.Where(a => a.State == request.State);
+            }
+
+            return query.ToPageList(request.PageIndex, request.PageSize, ref total);
         }
 
         public ContractModel GetDetail(ulong id)
@@ -22,7 +40,7 @@ namespace CRM.Repositories
 
         public bool UpdateInfo(ContractModel model)
         {
-            return AsUpdateable().Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).IgnoreColumns(a=> new {a.Id, a.AccountId,a.Account,a.Ctime,a.Utime}).Where(a => a.Id == model.Id).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)

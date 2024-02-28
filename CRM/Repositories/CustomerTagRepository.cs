@@ -1,4 +1,5 @@
 using CRM.Common.Helpers;
+using CRM.Models.View;
 using Models;
 using SqlSugar;
 
@@ -35,9 +36,20 @@ namespace CRM.Repositories
             return AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime }).ExecuteCommand() > 0;
         }
 
-        public List<CustomerTagModel> GetCustomerTagList(ulong customerId)
+        public List<CustomerTagViewModel> GetCustomerTagList(ulong customerId)
         {
-            return AsQueryable().Where(a => a.CustomerId == customerId).ToList();
+            var query = AsQueryable().LeftJoin<TagModel>((cust, tag) => cust.TagId == tag.Id).Where((cust, tag) => cust.CustomerId == customerId && tag.Isdel == 0);
+            var result = query.Select((cust, tag) => new CustomerTagViewModel()
+            {
+                Ctime = cust.Ctime,
+                CustomerId = cust.CustomerId,
+                GroupId = tag.GroupId,
+                Id = cust.Id,
+                Name = tag.Name,
+                Utime = cust.Utime,
+            }).ToList();
+
+            return result;
         }
     }
 }

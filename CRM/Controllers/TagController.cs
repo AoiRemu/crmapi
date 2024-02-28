@@ -4,34 +4,34 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
 {
-    public class CustomerGroupController : BaseController
+    public class TagController : BaseController
     {
-        private ICustomerGroupService service;
+        private ITagService service;
 
-        public CustomerGroupController(ICustomerGroupService service)
+        public TagController(ITagService service)
         {
             this.service = service;
         }
 
         [HttpPost]
-        public PageResponse<CustomerGroupViewModel> SearchList(CustomerGroupRequest request)
+        public PageResponse<TagViewModel> SearchList(TagRequest request)
         {
             return service.SearchList(request);
         }
 
         [HttpPost]
-        public ResultInfo Add(CustomerGroupViewModel model)
+        public ResultInfo Add(TagViewModel model)
         {
             return service.Add(model);
         }
 
         [HttpPut]
-        public ResultInfo Update(CustomerGroupViewModel model)
+        public ResultInfo Update(TagViewModel model)
         {
             return service.Update(model);
         }
 
-        [HttpDelete]
+        [HttpPut]
         public ResultInfo Delete(ulong id)
         {
             return service.Delete(id);
