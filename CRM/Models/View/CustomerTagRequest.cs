@@ -1,8 +1,11 @@
 ﻿
 namespace CRM.Models.View
 {
-    public class CustomerTagRequest
+    public class CustomerTagUpdateRequest
     {
+        public ulong CustomerId { get; set; }
+
+        public List<ulong> TagIdList { get; set; } = new List<ulong>();
     }
 
     public class CustomerTagViewModel

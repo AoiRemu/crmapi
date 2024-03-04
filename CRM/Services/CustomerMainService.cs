@@ -3,6 +3,8 @@ using CRM.Repositories;
 using CRM.Models.View;
 using CRM.Models.Enums;
 using CRM.Common.Helpers;
+using CRM.Commons.Helpers;
+using Models;
 
 namespace CRM.Services
 {
@@ -139,9 +141,42 @@ namespace CRM.Services
             return ResultInfo.Success("更新跟进状态成功");
         }
 
-        //public ResultInfo ImportCustomers()
-        //{
+        public ResultInfo ImportCustomers(IFormFileCollection files, AccountData accountData)
+        {
+            var result = ExcelHelper.ReadExcel<CustomerImportItemModel>(files);
+            if (!result.IsSuccess)
+            {
+                return ResultInfo.Fail(result.Message);
+            }
 
-        //}
+            try
+            {
+                repository.BeginTran();
+
+                foreach (var item in result.ResultData)
+                {
+                    var mainModel = item.ToDBModel();
+                    var id = repository.AddInfo(mainModel);
+                    var infoModel = new FollowUpLogModel()
+                    {
+                        Account = accountData.Account,
+                        AccountId = accountData.AccountId,
+                        CustomerId = id,
+                        Message = item.FollowContent,
+                    };
+
+                    followUpLogRepository.AddInfo(infoModel);
+                }
+
+                repository.CommitTran();
+
+                return ResultInfo.Success("导入数据成功");
+            }
+            catch (Exception ex)
+            {
+                repository.RollTran();
+                return ResultInfo.Fail("导入数据失败."+ ex.Message);
+            }
+        }
     }
 }

@@ -18,5 +18,11 @@ namespace CRM.Controllers
         {
             return service.GetCustomerTagList(id);
         }
+
+        [HttpPost]
+        public ResultInfo UpdateCustomerTags(CustomerTagUpdateRequest request)
+        {
+            return service.UpdateCustomerTags(request);
+        }
     }
 }

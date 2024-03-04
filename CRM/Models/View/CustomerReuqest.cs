@@ -186,8 +186,13 @@ namespace CRM.Models.View
 
         public CustomerInfoViewModel() { }
 
-        public CustomerInfoViewModel(CustomerInfoModel model)
+        public CustomerInfoViewModel(CustomerInfoModel? model)
         {
+            if(model == null)
+            {
+                return;
+            }
+
             Id = model.Id;
             CustomerId = model.CustomerId;
             Birthday = model.Birthday;
@@ -279,4 +284,36 @@ namespace CRM.Models.View
 
         public short Level { get; set; }
     }
+
+    #region 导入数据
+
+    public class CustomerImportItemModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string House { get; set; } = string.Empty;
+        public string Car { get; set; } = string.Empty;
+        public string Job { get; set; } = string.Empty;
+        public string Business { get; set; } = string.Empty;
+        public string Policy { get; set; } = string.Empty;
+        public string Company { get; set; } = string.Empty;
+        public string FollowContent { get; set; } = string.Empty;
+
+        public CustomerMainModel ToDBModel()
+        {
+            var qualiList = new List<string>()
+            {
+                House, Car, Job, Business, Policy,Company
+            };
+
+            return new CustomerMainModel()
+            {
+                Name = Name,
+                Phone = Phone,
+                Qualification = string.Join("\n", qualiList),
+            };
+        }
+    }
+
+    #endregion
 }

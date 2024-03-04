@@ -51,5 +51,20 @@ namespace CRM.Repositories
 
             return result;
         }
+
+        public List<CustomerTagModel> GetListByCustomerId(ulong customerId)
+        {
+            return AsQueryable().Where(a => a.CustomerId == customerId).ToList();
+        }
+
+        public bool BatchAddInfo(List<CustomerTagModel> list)
+        {
+            return AsInsertable(list).IgnoreColumns(a => new { a.Ctime, a.Utime, a.Id }).ExecuteCommand() > 0;
+        }
+
+        public bool BatchDeleteByCustomerId (ulong customerId, List<ulong> tagIdList)
+        {
+            return AsDeleteable().Where(a => a.CustomerId == customerId && tagIdList.Contains(a.TagId)).ExecuteCommandHasChange();
+        }
     }
 }

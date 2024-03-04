@@ -14,5 +14,18 @@
 
             return result;
         }
+
+        public static DateTime? ToDateTime(this string dateStr)
+        {
+            try
+            {
+                var date = Convert.ToDateTime(dateStr);
+                return date;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

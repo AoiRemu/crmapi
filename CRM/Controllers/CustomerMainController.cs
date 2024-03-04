@@ -72,5 +72,11 @@ namespace CRM.Controllers
         {
             return service.UpdateFollowState(id, followState);
         }
+
+        [HttpPost]
+        public ResultInfo ImportCustomers()
+        {
+            return service.ImportCustomers(HttpContext.Request.Form.Files, AccountData);
+        }
     }
 }

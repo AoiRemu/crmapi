@@ -24,5 +24,7 @@ namespace CRM.Services.Interfaces
         public List<CommonOption<short>> GetFollowStateStep();
 
         public ResultInfo UpdateFollowState(ulong id, short followState);
+
+        public ResultInfo ImportCustomers(IFormFileCollection files, AccountData accountData);
     }
 }

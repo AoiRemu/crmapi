@@ -45,7 +45,7 @@ namespace Models
            /// Nullable:False
            /// </summary>
            [SugarColumn(ColumnName="name")]           
-           public string Name {get;set;}
+           public string Name {get;set;} = string.Empty;
 
            /// <summary>
            /// Desc:性别;0-未知;1-男;2-女
@@ -53,22 +53,22 @@ namespace Models
            /// Nullable:False
            /// </summary>
            [SugarColumn(ColumnName="gender")]           
-           public short Gender {get;set;}
+           public short Gender {get;set; }
 
-           /// <summary>
-           /// Desc:来源
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="source")]           
-           public string Source {get;set;}
+        /// <summary>
+        /// Desc:来源
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="source")]           
+           public string Source {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:分组id
-           /// Default:0
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="group_id")]           
+        /// <summary>
+        /// Desc:分组id
+        /// Default:0
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="group_id")]           
            public ulong GroupId {get;set;}
 
            /// <summary>
@@ -85,14 +85,14 @@ namespace Models
            /// Nullable:False
            /// </summary>
            [SugarColumn(ColumnName="follow_account")]           
-           public string FollowAccount {get;set;}
+           public string FollowAccount {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:跟进人id
-           /// Default:0
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="follow_account_id")]           
+        /// <summary>
+        /// Desc:跟进人id
+        /// Default:0
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="follow_account_id")]           
            public ulong FollowAccountId {get;set;}
 
            /// <summary>
@@ -101,62 +101,62 @@ namespace Models
            /// Nullable:False
            /// </summary>
            [SugarColumn(ColumnName="phone")]           
-           public string Phone {get;set;}
+           public string Phone {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:座机
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="telphone")]           
-           public string Telphone {get;set;}
+        /// <summary>
+        /// Desc:座机
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="telphone")]           
+           public string Telphone {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:QQ
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="qq")]           
-           public string Qq {get;set;}
+        /// <summary>
+        /// Desc:QQ
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="qq")]           
+           public string Qq {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:微信
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="wechat")]           
-           public string Wechat {get;set;}
+        /// <summary>
+        /// Desc:微信
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="wechat")]           
+           public string Wechat {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:地区
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="county")]           
-           public string County {get;set;}
+        /// <summary>
+        /// Desc:地区
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="county")]           
+           public string County {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:地址
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="address")]           
-           public string Address {get;set;}
+        /// <summary>
+        /// Desc:地址
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="address")]           
+           public string Address {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:资质
-           /// Default:
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="qualification")]           
-           public string Qualification {get;set;}
+        /// <summary>
+        /// Desc:资质
+        /// Default:
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="qualification")]           
+           public string Qualification {get;set; } = string.Empty;
 
-           /// <summary>
-           /// Desc:状态;0-新入库;1-已认领;2-放弃;3-已成交;
-           /// Default:0
-           /// Nullable:False
-           /// </summary>
-           [SugarColumn(ColumnName="state")]           
+        /// <summary>
+        /// Desc:状态;0-新入库;1-已认领;2-放弃;3-已成交;
+        /// Default:0
+        /// Nullable:False
+        /// </summary>
+        [SugarColumn(ColumnName="state")]           
            public short State {get;set;}
 
            /// <summary>
