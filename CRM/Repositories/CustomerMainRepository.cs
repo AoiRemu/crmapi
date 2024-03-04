@@ -1,4 +1,5 @@
 using CRM.Common.Helpers;
+using CRM.Models.Enums;
 using CRM.Models.View;
 using Models;
 using SqlSugar;
@@ -15,26 +16,24 @@ namespace CRM.Repositories
         public List<CustomerSearchViewModel> SearchList(CustomerSearchReuqest request, out int total)
         {
             total = 0;
-            var query = AsQueryable();
+            var query = Context.Queryable<CustomerMainModel>().LeftJoin<CustomerGroupModel>((main, group) => main.GroupId == group.Id);
 
             if (!string.IsNullOrEmpty(request.Name))
             {
-                query.Where(a => a.Name.Contains(request.Name));
+                query.Where((main, group) => main.Name.Contains(request.Name));
             }
 
             if (request.State != null)
             {
-                query.Where(a => a.State == request.State);
+                query.Where((main, group) => main.State == request.State);
             }
 
             if (request.GroupId != null)
             {
-                query.Where(a => a.GroupId == request.GroupId);
+                query.Where((main, group) => main.GroupId == request.GroupId);
             }
 
-            Console.WriteLine(query.ToSqlString());
-
-            var result = query.Select((main) => new CustomerSearchViewModel()
+            var result = query.Select((main, group) => new CustomerSearchViewModel()
             {
                 Id = main.Id,
                 Name = main.Name,
@@ -43,6 +42,7 @@ namespace CRM.Repositories
                 Ctime = main.Ctime,
                 FollowState = main.FollowState,
                 GroupId = main.GroupId,
+                GroupName = group.Name,
                 Level = main.Level,
                 Phone = main.Phone,
                 Qualification = main.Qualification,
@@ -59,7 +59,7 @@ namespace CRM.Repositories
 
         public bool UpdateInfo(CustomerMainModel model)
         {
-            return AsUpdateable().Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).IgnoreColumns(a=> new {a.Ctime, a.Utime,a.State,a.FollowState}).Where(a => a.Id == model.Id).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)
@@ -69,7 +69,7 @@ namespace CRM.Repositories
 
         public ulong AddInfo(CustomerMainModel model)
         {
-            return (ulong)AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime, a.Isdel }).ExecuteReturnIdentity();
+            return (ulong)AsInsertable(model).IgnoreColumns(a => new { a.Ctime, a.Utime, a.Isdel, a.FollowAccount, a.FollowAccountId }).ExecuteReturnIdentity();
         }
 
         public bool BatchGroup(CustomerBatchGroupRequest request)
@@ -90,6 +90,23 @@ namespace CRM.Repositories
         public bool BatchUpdateGroupId(List<CustomerMainModel> list)
         {
             return AsUpdateable(list).UpdateColumns(a => new { a.GroupId }).ExecuteCommandHasChange();
+        }
+
+        public bool Allot(ulong customerId, ulong accountId, string account)
+        {
+            return AsUpdateable().SetColumns(a => a.FollowAccount == account).SetColumns(a=> a.FollowAccountId == accountId)
+                .SetColumns(a=> a.State == (short)CustomerMainStateEnum.Allotted)
+                .Where(a => a.Id == customerId).ExecuteCommandHasChange();
+        }
+
+        public bool UpdateStar(ulong id, short level)
+        {
+            return AsUpdateable().SetColumns(a => a.Level == level).Where(a => a.Id == id).ExecuteCommandHasChange();
+        }
+
+        public bool UpdateFollowState(ulong id, short followState)
+        {
+            return AsUpdateable().SetColumns(a => a.FollowState == followState).Where(a => a.Id == id).ExecuteCommandHasChange();
         }
     }
 }

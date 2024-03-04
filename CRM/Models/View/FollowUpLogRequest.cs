@@ -29,11 +29,9 @@ namespace CRM.Models.View
             {
                 Id = Id,
                 CustomerId = CustomerId,
-                Ctime = Ctime,
-                Utime = Utime,
                 Message = Message,
                 Account = Account,
-                AccountId = AccountId,
+                AccountId = AccountId ?? 0,
                 NextFollowTime = NextFollowTime,
             };
         }
@@ -45,14 +43,14 @@ namespace CRM.Models.View
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        public DateTime Ctime { get; set; }
+        public DateTime? Ctime { get; set; }
 
         /// <summary>
         /// Desc:更新时间
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        public DateTime Utime { get; set; }
+        public DateTime? Utime { get; set; }
 
         /// <summary>
         /// Desc:信息
@@ -66,14 +64,14 @@ namespace CRM.Models.View
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Account { get; set; }
+        public string? Account { get; set; }
 
         /// <summary>
         /// Desc:跟进人id
         /// Default:0
         /// Nullable:False
         /// </summary>
-        public ulong AccountId { get; set; }
+        public ulong? AccountId { get; set; }
 
         /// <summary>
         /// Desc:下次跟进时间

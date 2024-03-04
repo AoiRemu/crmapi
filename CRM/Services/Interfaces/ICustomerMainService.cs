@@ -9,8 +9,20 @@ namespace CRM.Services.Interfaces
 
         public ResultInfo Add(CustomerAddRequest request);
 
+        public ResultInfo Update(CustomerAddRequest request);
+
         public ResultInfo BatchUpdateGroup(CustomerBatchGroupRequest request);
 
         public ResultInfo GiveUp(ulong customerId);
+
+        public ResultInfo Allot(ulong customerId, AccountData accountData);
+
+        public CustomerMainInfoViewModel GetDetail(ulong id);
+
+        public ResultInfo UpdateStar(CustomerUpdateStarRequest request);
+
+        public List<CommonOption<short>> GetFollowStateStep();
+
+        public ResultInfo UpdateFollowState(ulong id, short followState);
     }
 }

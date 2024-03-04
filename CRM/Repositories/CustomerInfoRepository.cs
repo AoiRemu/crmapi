@@ -15,14 +15,14 @@ namespace CRM.Repositories
             return Context.Queryable<CustomerInfoModel>().ToList();
         }
 
-        public CustomerInfoModel GetDetail(ulong id)
+        public CustomerInfoModel GetDetail(ulong customerId)
         {
-            return Context.Queryable<CustomerInfoModel>().Where(a => a.Id == id).First();
+            return Context.Queryable<CustomerInfoModel>().Where(a => a.CustomerId == customerId).First();
         }
 
         public bool UpdateInfo(CustomerInfoModel model)
         {
-            return AsUpdateable().Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).IgnoreColumns(a=> new {a.Ctime, a.Utime, a.Id, a.CustomerId}).Where(a => a.Id == model.Id).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)

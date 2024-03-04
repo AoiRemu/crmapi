@@ -24,5 +24,13 @@ namespace CRM.Controllers
         {
             return service.Add(model, AccountData);
         }
+
+        [HttpGet("{id}")]
+        public List<FollowUpLogViewModel> Customer(ulong id)
+        {
+            var request = new FollowUpLogRequest { CustomerId = id };
+
+            return service.SearchList(request);
+        }
     }
 }

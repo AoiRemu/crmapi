@@ -1,6 +1,7 @@
 using CRM.Services.Interfaces;
 using CRM.Repositories;
 using CRM.Models.View;
+using CRM.Models.Enums;
 
 namespace CRM.Services
 {
@@ -37,8 +38,30 @@ namespace CRM.Services
 
         public ResultInfo Update(ContractViewModel model)
         {
-            repository.UpdateInfo(model.ToDBModel());
+            var result = repository.UpdateInfo(model.ToDBModel());
             return ResultInfo.Success("更新合同成功");
+        }
+
+        public List<CommonOption<short>> GetContractOptions()
+        {
+            var values = Enum.GetValues(typeof(ContractStateEnum));
+            var result = new List<CommonOption<short>>();
+            foreach (ContractStateEnum value in values)
+            {
+                result.Add(new CommonOption<short>()
+                {
+                    Label = value.ToString(),
+                    Value = (short)value
+                });
+            }
+
+            return result;
+        }
+
+        public ContractViewModel GetDetail(ulong id)
+        {
+            var model = repository.GetDetail(id);
+            return new ContractViewModel(model);
         }
     }
 }

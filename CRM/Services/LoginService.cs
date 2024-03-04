@@ -12,12 +12,10 @@ namespace CRM.Services
     {
         private AccountMainRepository accountMainRepository;
         private AccountRoleRepository accountRoleRepository;
-        private IConfiguration configuration;
-        public LoginService(AccountMainRepository accountMainRepository, AccountRoleRepository accountRoleRepository, IConfiguration configuration)
+        public LoginService(AccountMainRepository accountMainRepository, AccountRoleRepository accountRoleRepository)
         {
             this.accountMainRepository = accountMainRepository;
             this.accountRoleRepository = accountRoleRepository;
-            this.configuration = configuration;
         }
 
         public ResultInfo Login(LoginRequest request)
@@ -35,7 +33,6 @@ namespace CRM.Services
                 return ResultInfo.Fail<LoginResponse>("此用户无权限，请联系管理员");
             }
 
-            var tokenHeler = new TokenHelper(configuration);
             var jwtUser = new JwtUser()
             {
                 Id = account.Id.ToString(),
@@ -44,7 +41,7 @@ namespace CRM.Services
                 Roles = roles.Select(a => Enum.GetName((AccountRoleEnum)a.Role) ?? "")
             };
 
-            var token = tokenHeler.GenerateToken(jwtUser);
+            var token = TokenHelper.GenerateToken(jwtUser);
             var loginResponse = new LoginResponse()
             {
                 Token = token,

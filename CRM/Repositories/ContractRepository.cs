@@ -15,6 +15,12 @@ namespace CRM.Repositories
         {
             total = 0;
             var query = AsQueryable();
+
+            if(request.CustomerId != null)
+            {
+                query.Where(a => a.CustomerId == request.CustomerId);
+            }
+
             if(request.AccountId != null)
             {
                 query.Where(a => a.AccountId == request.AccountId);
@@ -30,6 +36,11 @@ namespace CRM.Repositories
                 query.Where(a => a.State == request.State);
             }
 
+            if (!request.IsPage)
+            {
+                return query.ToList();
+            }
+
             return query.ToPageList(request.PageIndex, request.PageSize, ref total);
         }
 
@@ -40,7 +51,7 @@ namespace CRM.Repositories
 
         public bool UpdateInfo(ContractModel model)
         {
-            return AsUpdateable(model).IgnoreColumns(a=> new {a.Id, a.AccountId,a.Account,a.Ctime,a.Utime}).Where(a => a.Id == model.Id).ExecuteCommandHasChange();
+            return AsUpdateable(model).UpdateColumns(a => new { a.SignTime, a.Amount, a.CustomerId, a.State }).ExecuteCommandHasChange();
         }
 
         public bool DeleteInfo(ulong id)

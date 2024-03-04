@@ -30,5 +30,17 @@ namespace CRM.Controllers
         {
             return service.Update(model);
         }
+
+        [HttpGet]
+        public List<CommonOption<short>> GetContractOptions()
+        {
+            return service.GetContractOptions();
+        }
+
+        [HttpGet("{id}")]
+        public ContractViewModel GetDetail(ulong id)
+        {
+            return service.GetDetail(id);
+        }
     }
 }

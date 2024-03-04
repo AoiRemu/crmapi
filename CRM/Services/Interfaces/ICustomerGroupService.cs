@@ -12,5 +12,7 @@ namespace CRM.Services.Interfaces
         public ResultInfo Update(CustomerGroupViewModel model);
 
         public ResultInfo Delete(ulong id);
+
+        public List<CustomerGroupViewModel> GetOptions(CustomerGroupRequest request);
     }
 }

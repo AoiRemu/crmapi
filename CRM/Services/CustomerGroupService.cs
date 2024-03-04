@@ -62,5 +62,14 @@ namespace CRM.Services
                 return ResultInfo.Fail("É¾³ý·Ö×éÊ§°Ü");
             }
         }
+
+        public List<CustomerGroupViewModel> GetOptions(CustomerGroupRequest request)
+        {
+            int total;
+            var list = repository.SearchList(request, out total);
+            var result = list.Select(a => new CustomerGroupViewModel(a)).ToList();
+            result.Insert(0, new CustomerGroupViewModel() { Name = "ÎÞ" });
+            return result;
+        }
     }
 }

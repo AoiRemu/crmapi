@@ -26,6 +26,7 @@ namespace CRM.Models.View
         public short Level { get; set; }
         public short State { get; set; }
         public ulong GroupId { get; set; }
+        public string GroupName { get; set; } = string.Empty;
         public List<CustomerTagViewModel> Tags { get; set; } = new List<CustomerTagViewModel>();
         public string Qualification { get; set; } = string.Empty;
         public DateTime? NextFollowTime { get; set; }
@@ -37,16 +38,17 @@ namespace CRM.Models.View
 
     public class CustomerAddRequest
     {
-        public CustomerMainAddViewModel Main { get; set; }
+        public CustomerMainInfoViewModel Main { get; set; }
 
-        public CustomerInfoAddViewModel Info { get; set; }
+        public CustomerInfoViewModel Info { get; set; }
     }
 
-    public class CustomerMainAddViewModel
+    public class CustomerMainInfoViewModel
     {
-        public CustomerMainAddViewModel(){}
-        public CustomerMainAddViewModel(CustomerMainModel model)
+        public CustomerMainInfoViewModel(){}
+        public CustomerMainInfoViewModel(CustomerMainModel model)
         {
+            Id = model.Id;
             Name = model.Name;
             Gender = model.Gender;
             Source = model.Source;
@@ -59,12 +61,16 @@ namespace CRM.Models.View
             County  = model.County;
             Address = model.Address;
             Qualification = model.Qualification;
+            FollowAccount = model.FollowAccount;
+            FollowAccountId = model.FollowAccountId;
+            FollowState = model.FollowState;
         }
 
         public CustomerMainModel ToDBModel()
         {
             return new CustomerMainModel()
             {
+                Id = Id,
                 Name = Name,
                 Gender = Gender,
                 Source = Source,
@@ -77,8 +83,13 @@ namespace CRM.Models.View
                 County = County,
                 Address = Address,
                 Qualification = Qualification,
+                FollowAccount = FollowAccount,
+                FollowAccountId = FollowAccountId,
+                FollowState = FollowState,
             };
         }
+
+        public ulong Id { get; set; }
 
         /// <summary>
         /// Desc:名字
@@ -99,7 +110,7 @@ namespace CRM.Models.View
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Source { get; set; }
+        public string? Source { get; set; }
 
         /// <summary>
         /// Desc:分组id
@@ -120,58 +131,64 @@ namespace CRM.Models.View
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         /// <summary>
         /// Desc:座机
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Telphone { get; set; }
+        public string? Telphone { get; set; }
 
         /// <summary>
         /// Desc:QQ
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Qq { get; set; }
+        public string? Qq { get; set; }
 
         /// <summary>
         /// Desc:微信
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Wechat { get; set; }
+        public string? Wechat { get; set; }
 
         /// <summary>
         /// Desc:地区
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string County { get; set; }
+        public string? County { get; set; }
 
         /// <summary>
         /// Desc:地址
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// Desc:资质
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Qualification { get; set; }
+        public string? Qualification { get; set; }
+
+        public string FollowAccount { get; set; }
+
+        public ulong FollowAccountId { get; set; }
+        public short FollowState { get; set; }
     }
 
-    public class CustomerInfoAddViewModel
+    public class CustomerInfoViewModel
     {
 
-        public CustomerInfoAddViewModel() { }
+        public CustomerInfoViewModel() { }
 
-        public CustomerInfoAddViewModel(CustomerInfoModel model)
+        public CustomerInfoViewModel(CustomerInfoModel model)
         {
+            Id = model.Id;
             CustomerId = model.CustomerId;
             Birthday = model.Birthday;
             Position = model.Position;
@@ -185,8 +202,9 @@ namespace CRM.Models.View
         {
             return new CustomerInfoModel()
             {
+                Id = Id,
                 CustomerId = CustomerId,
-                Birthday = Birthday,
+                Birthday = Birthday ?? default(DateTime),
                 Position = Position,
                 Industry = Industry,
                 WorkAddress = WorkAddress,
@@ -195,6 +213,8 @@ namespace CRM.Models.View
             };
         }
 
+        public ulong Id { get; set; }
+
         public ulong CustomerId { get; set; }
 
         /// <summary>
@@ -202,42 +222,42 @@ namespace CRM.Models.View
         /// Default:1970-01-01 00:00:00
         /// Nullable:False
         /// </summary>
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
 
         /// <summary>
         /// Desc:职务
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Position { get; set; }
+        public string? Position { get; set; }
 
         /// <summary>
         /// Desc:行业
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Industry { get; set; }
+        public string? Industry { get; set; }
 
         /// <summary>
         /// Desc:工作单位
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string WorkAddress { get; set; }
+        public string? WorkAddress { get; set; }
 
         /// <summary>
         /// Desc:网址
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string NetAddress { get; set; }
+        public string? NetAddress { get; set; }
 
         /// <summary>
         /// Desc:备注
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 
     #endregion
@@ -252,4 +272,11 @@ namespace CRM.Models.View
     }
 
     #endregion
+
+    public class CustomerUpdateStarRequest
+    {
+        public ulong Id { get; set; }
+
+        public short Level { get; set; }
+    }
 }

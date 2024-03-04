@@ -28,7 +28,7 @@ namespace CRM.Models.View
                 Name = Name,
                 Ctime = Ctime,
                 Utime = Utime,
-                ParentId = ParentId
+                ParentId = ParentId ?? 0
             };
         }
 
@@ -65,6 +65,6 @@ namespace CRM.Models.View
         /// Default:0
         /// Nullable:False
         /// </summary>
-        public ulong ParentId { get; set; }
+        public ulong? ParentId { get; set; }
     }
 }

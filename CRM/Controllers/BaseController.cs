@@ -1,4 +1,5 @@
-﻿using CRM.Models.View;
+﻿using CRM.Common.Helpers;
+using CRM.Models.View;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +9,22 @@ namespace CRM.Controllers
     [Route("/api/[controller]/[action]")]
     public class BaseController : ControllerBase
     {
-        private AccountData _accountData;
-
         /// <summary>
         /// 当前操作人
         /// </summary>
-        protected AccountData AccountData => _accountData;
-        
+        protected AccountData? AccountData 
+        { 
+            get
+            {
+                var token = HttpContext.Request.Headers["Authorization"].ToString();
+                if (string.IsNullOrEmpty(token))
+                {
+                    return null;
+                }
+
+                var jwtToken = token.Split(" ")[1];
+                return TokenHelper.VerifyToken(jwtToken);
+            }
+        }
     }
 }

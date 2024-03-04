@@ -1,5 +1,6 @@
 using CRM.Services.Interfaces;
 using CRM.Repositories;
+using CRM.Models.View;
 
 namespace CRM.Services
 {
@@ -9,6 +10,11 @@ namespace CRM.Services
         public CustomerInfoService(CustomerInfoRepository repository)
         {
             this.repository = repository;
+        }
+
+        public CustomerInfoViewModel GetDetail(ulong customerId)
+        {
+            return new CustomerInfoViewModel(repository.GetDetail(customerId));
         }
     }
 }

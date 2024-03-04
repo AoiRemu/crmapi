@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using CRM.Models.Enums;
+using Models;
 using SqlSugar;
 using System.Security.Principal;
 
@@ -6,6 +7,8 @@ namespace CRM.Models.View
 {
     public class ContractRequest : PageRequest
     {
+        public ulong? CustomerId { get; set; }
+
         public ulong? AccountId { get; set; }
 
         public string? Account { get; set; } = string.Empty;
@@ -34,9 +37,11 @@ namespace CRM.Models.View
         {
             return new ContractModel
             {
+                Id = Id,
                 Amount = Amount,
                 State = State,
                 SignTime = SignTime,
+                CustomerId = CustomerId,
             };
         }
 
@@ -47,28 +52,28 @@ namespace CRM.Models.View
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        public DateTime Ctime { get; set; }
+        public DateTime? Ctime { get; set; }
 
         /// <summary>
         /// Desc:更新时间
         /// Default:CURRENT_TIMESTAMP
         /// Nullable:False
         /// </summary>
-        public DateTime Utime { get; set; }
+        public DateTime? Utime { get; set; }
 
         /// <summary>
         /// Desc:经理人
         /// Default:
         /// Nullable:False
         /// </summary>
-        public string Account { get; set; }
+        public string? Account { get; set; }
 
         /// <summary>
         /// Desc:经理人id
         /// Default:0
         /// Nullable:False
         /// </summary>
-        public ulong AccountId { get; set; }
+        public ulong? AccountId { get; set; }
 
         /// <summary>
         /// Desc:金额
@@ -90,6 +95,8 @@ namespace CRM.Models.View
         /// Nullable:False
         /// </summary>
         public short State { get; set; }
+
+        public string? StateDesc => Enum.GetName(typeof(ContractStateEnum), State);
 
         /// <summary>
         /// Desc:客户id

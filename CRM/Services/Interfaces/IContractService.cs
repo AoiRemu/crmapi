@@ -10,5 +10,9 @@ namespace CRM.Services.Interfaces
         public ResultInfo Add(ContractViewModel model, AccountData accountData);
 
         public ResultInfo Update(ContractViewModel model);
+
+        public List<CommonOption<short>> GetContractOptions();
+
+        public ContractViewModel GetDetail(ulong id);
     }
 }

@@ -7,6 +7,9 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -14,7 +17,6 @@ services.AddHttpContextAccessor();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,8 +29,7 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 
 #region JWT配置
 
-var tokenHelper = new TokenHelper(builder.Configuration);
-var key = Encoding.ASCII.GetBytes(tokenHelper._jwtSettings.SecretKey ?? "");
+var key = Encoding.ASCII.GetBytes(TokenHelper._jwtSettings.SecretKey ?? "");
 
 builder.Services.AddAuthentication(option =>
 {
@@ -50,13 +51,20 @@ builder.Services.AddAuthentication(option =>
 
 #endregion
 
-builder.Services.AddControllers()
-.AddJsonOptions(options =>
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
-    //options.JsonSerializerOptions.PropertyNamingPolicy = null;//解决后端传到前端全大写
-    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//解决后端返回数据中文被编码
-    options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter("yyyy-MM-dd HH:mm:ss"));//格式化日期时间格式
+    options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";//全局处理 返回时间格式
+    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;//全局处理 接收时间并做本地化处理
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();//首字母小写驼峰式命名
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;//忽略循环引用
 });
+//.AddJsonOptions(options =>
+//{
+//    //options.JsonSerializerOptions.PropertyNamingPolicy = null;//解决后端传到前端全大写
+//    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);//解决后端返回数据中文被编码
+//    options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter("yyyy-MM-dd HH:mm:ss"));//格式化日期时间格式
+//});
 
 #region SqlSugar
 
@@ -103,28 +111,34 @@ app.MapControllers();
 app.Run();
 
 
-/// <summary>
-/// 格式化返回的时间格式
-/// </summary>
-public class DatetimeJsonConverter : JsonConverter<DateTime>
-{
-    private readonly string format;
-    public DatetimeJsonConverter(string _format)
-    {
-        format = _format;
-    }
-    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        if (reader.TokenType == JsonTokenType.String)
-        {
-            if (DateTime.TryParse(reader.GetString(), out DateTime date))
-                return date;
-        }
-        return reader.GetDateTime();
-    }
+///// <summary>
+///// 格式化返回的时间格式
+///// </summary>
+//public class DatetimeJsonConverter : JsonConverter<DateTime>
+//{
+//    private readonly string format;
+//    public DatetimeJsonConverter(string _format)
+//    {
+//        format = _format;
+//    }
+//    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+//    {
+//        var jsonStr = reader.GetString();
+//        if (string.IsNullOrEmpty(jsonStr))
+//        {
+//            return DateTime.MinValue;
+//        }
 
-    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(value.ToString(format));
-    }
-}
+//        if (reader.TokenType == JsonTokenType.String)
+//        {
+//            if (DateTime.TryParse(reader.GetString(), out DateTime date))
+//                return date;
+//        }
+//        return reader.GetDateTime();
+//    }
+
+//    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+//    {
+//        writer.WriteStringValue(value.ToString(format));
+//    }
+//}

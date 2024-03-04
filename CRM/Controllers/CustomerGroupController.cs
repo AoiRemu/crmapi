@@ -31,10 +31,16 @@ namespace CRM.Controllers
             return service.Update(model);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ResultInfo Delete(ulong id)
         {
             return service.Delete(id);
+        }
+
+        [HttpPost]
+        public List<CustomerGroupViewModel> GetOptions(CustomerGroupRequest request)
+        {
+            return service.GetOptions(request);
         }
     }
 }

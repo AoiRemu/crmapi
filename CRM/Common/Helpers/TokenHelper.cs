@@ -5,19 +5,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Newtonsoft.Json;
+using CRM.Models.View;
 
 namespace CRM.Common.Helpers
 {
-    public class TokenHelper
+    public static class TokenHelper
     {
-        public readonly JwtSettings _jwtSettings;
-        private readonly double _expirs = 24;
-        public TokenHelper(IConfiguration configuration)
+        public static readonly JwtSettings _jwtSettings;
+        private static readonly double _expirs = 24;
+        static TokenHelper()
         {
-            _jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+            _jwtSettings = ConfigurationHelper.GetInstance().GetSection("JwtSettings").Get<JwtSettings>();
         }
 
-        public string GenerateToken(JwtUser user)
+        public static string GenerateToken(JwtUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey.ToMD5String());
@@ -25,9 +26,9 @@ namespace CRM.Common.Helpers
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Role, user.RolesString),
+                    new Claim("AccountId", user.Id),
+                    new Claim("Name", user.Name),
+                    new Claim("Role", user.RolesString),
                     new Claim("Account", user.Account)
                 }),
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpirationHours == null ? _expirs : Convert.ToDouble(_jwtSettings.ExpirationHours)),
@@ -36,6 +37,21 @@ namespace CRM.Common.Helpers
 
             var token = tokenHandler.CreateToken(tokenDescriper);
             return tokenHandler.WriteToken(token);
+        }
+
+        public static AccountData VerifyToken(string token)
+        {
+            SecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.SecretKey.ToMD5String()));
+            var jwtTokenInfo = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var result = new AccountData()
+            {
+                Account = jwtTokenInfo.Claims.FirstOrDefault(a => a.Type == "Account").Value,
+                AccountId = Convert.ToUInt64(jwtTokenInfo.Claims.FirstOrDefault(a => a.Type == "AccountId").Value),
+                RoleString = jwtTokenInfo.Claims.FirstOrDefault(a=> a.Type == "Role").Value,
+                Name = jwtTokenInfo.Claims.FirstOrDefault(a=> a.Type == "Name").Value
+            };
+
+            return result;
         }
     }
 

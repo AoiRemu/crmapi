@@ -1,5 +1,6 @@
 using CRM.Services.Interfaces;
 using CRM.Repositories;
+using CRM.Models.View;
 
 namespace CRM.Services
 {
@@ -10,5 +11,15 @@ namespace CRM.Services
         {
             this.repository = repository;
         }
+
+        public List<CustomerTagViewModel> GetCustomerTagList(ulong id)
+        {
+            return repository.GetCustomerTagList(id);
+        }
+
+        //public ResultInfo UpdateCustomerTag()
+        //{
+
+        //}
     }
 }

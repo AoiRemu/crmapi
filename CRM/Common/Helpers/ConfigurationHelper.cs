@@ -1,14 +1,16 @@
 ﻿namespace CRM.Common.Helpers
 {
-    public class ConfigurationHelper
+    public static class ConfigurationHelper
     {
         private static IConfiguration instance;
-        public ConfigurationHelper(IConfiguration configuration) 
+        static ConfigurationHelper() 
         {
-            instance = configuration;
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            instance = builder.Build();
         }
 
-        public IConfiguration GetInstance()
+        public static IConfiguration GetInstance()
         {
             return instance;
         }

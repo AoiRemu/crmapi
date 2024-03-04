@@ -38,7 +38,7 @@ namespace CRM.Repositories
 
         public List<CustomerTagViewModel> GetCustomerTagList(ulong customerId)
         {
-            var query = AsQueryable().LeftJoin<TagModel>((cust, tag) => cust.TagId == tag.Id).Where((cust, tag) => cust.CustomerId == customerId && tag.Isdel == 0);
+            var query = Context.Queryable<CustomerTagModel>().LeftJoin<TagModel>((cust, tag) => cust.TagId == tag.Id).Where((cust, tag) => cust.CustomerId == customerId && tag.Isdel == 0);
             var result = query.Select((cust, tag) => new CustomerTagViewModel()
             {
                 Ctime = cust.Ctime,
