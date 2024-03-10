@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using CRM.Common.Helpers;
+using CRM.Models.Enums;
+using Models;
 using SqlSugar;
 
 namespace CRM.Models.View
@@ -19,12 +21,14 @@ namespace CRM.Models.View
         public string Name { get; set;} = string.Empty;
         public ulong Id { get; set; }
         public short FollowState { get; set; }
+        public string FollowStateDesc => EnumHelper.GetDescription<CustomerMainFollowStateEnum>(FollowState.ToString());
         public DateTime Ctime { get; set; }
         public string Phone { get; set; } = string.Empty;
         public string FollowAccount { get; set; } = string.Empty;
         public ulong FollowAccountId { get; set; }
         public short Level { get; set; }
         public short State { get; set; }
+        public string StateDesc => EnumHelper.GetDescription<CustomerMainStateEnum>(State.ToString());
         public ulong GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;
         public List<CustomerTagViewModel> Tags { get; set; } = new List<CustomerTagViewModel>();
@@ -84,8 +88,8 @@ namespace CRM.Models.View
                 Address = Address,
                 Qualification = Qualification,
                 FollowAccount = FollowAccount,
-                FollowAccountId = FollowAccountId,
-                FollowState = FollowState,
+                FollowAccountId = FollowAccountId ?? 0,
+                FollowState = FollowState ?? 0,
             };
         }
 
@@ -175,10 +179,10 @@ namespace CRM.Models.View
         /// </summary>
         public string? Qualification { get; set; }
 
-        public string FollowAccount { get; set; }
+        public string? FollowAccount { get; set; }
 
-        public ulong FollowAccountId { get; set; }
-        public short FollowState { get; set; }
+        public ulong? FollowAccountId { get; set; }
+        public short? FollowState { get; set; }
     }
 
     public class CustomerInfoViewModel
@@ -207,20 +211,20 @@ namespace CRM.Models.View
         {
             return new CustomerInfoModel()
             {
-                Id = Id,
-                CustomerId = CustomerId,
+                Id = Id ?? 0,
+                CustomerId = CustomerId ?? 0,
                 Birthday = Birthday ?? default(DateTime),
                 Position = Position,
-                Industry = Industry,
+                Industry = Industry, 
                 WorkAddress = WorkAddress,
                 NetAddress = NetAddress,
                 Description = Description,
             };
         }
 
-        public ulong Id { get; set; }
+        public ulong? Id { get; set; }
 
-        public ulong CustomerId { get; set; }
+        public ulong? CustomerId { get; set; }
 
         /// <summary>
         /// Desc:生日

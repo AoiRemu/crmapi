@@ -16,5 +16,11 @@ namespace CRM.Common.Helpers
             DescriptionAttribute desc = (DescriptionAttribute)objs[0];
             return desc.Description;
         }
+
+        public static string GetDescription<T>(string value) where T : Enum
+        {
+            var enumValue = Enum.Parse(typeof(T) ,value) as Enum;
+            return enumValue.GetDescription();
+        }
     }
 }

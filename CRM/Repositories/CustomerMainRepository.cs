@@ -33,6 +33,8 @@ namespace CRM.Repositories
                 query.Where((main, group) => main.GroupId == request.GroupId);
             }
 
+            query.OrderByDescending((main, group) => main.Id);
+
             var result = query.Select((main, group) => new CustomerSearchViewModel()
             {
                 Id = main.Id,

@@ -7,21 +7,25 @@ namespace CRM.Models.Enums
         /// <summary>
         /// 新入库
         /// </summary>
+        [Description("新入库")]
         New = 0,
 
         /// <summary>
         /// 已认领
         /// </summary>
+        [Description("已认领")]
         Allotted = 1,
 
         /// <summary>
         /// 放弃
         /// </summary>
+        [Description("放弃")]
         Abandon = 2,
 
         /// <summary>
         /// 已成交
         /// </summary>
+        [Description("已成交")]
         DealDone = 3
     }
 
